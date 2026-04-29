@@ -31,17 +31,16 @@ from pptx.dml.color import RGBColor as PptRGBColor
 from pptx.enum.text import PP_ALIGN
 
 from mcp_guardrail_server import authorize_url, sanitize_question, is_high_stakes, validate_answer, guardrail_summary
-
+from pathlib import Path
 BASE_URL = "https://catalog.msutexas.edu/content.php?catoid=28&navoid=1490"
-OUT_DIR = Path("outputs")
-DATA_DIR = Path("data")
-REPORT_DIR = OUT_DIR / "reports"
-CHART_DIR = OUT_DIR / "charts"
-INDEX_FILE = OUT_DIR / "catalog_chunks.csv"
-CRAWL_STATE_FILE = OUT_DIR / "crawl_state.json"
-CHAT_LOG_FILE = OUT_DIR / "agent_chat_log.json"
-EVAL_FILE = OUT_DIR / "rag_evaluation_results.csv"
-CITATION_FILE = OUT_DIR / "citation_verification_results.csv"
+
+
+BASE_DIR = Path(__file__).parent
+DATA_DIR = BASE_DIR / "data"
+OUTPUT_DIR = BASE_DIR / "outputs"
+REPORT_DIR = OUTPUT_DIR / "reports"
+CHART_DIR = OUTPUT_DIR / "charts"
+
 
 def safe_mkdir(path):
     """
