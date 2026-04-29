@@ -31,29 +31,28 @@ from pptx.dml.color import RGBColor as PptRGBColor
 from pptx.enum.text import PP_ALIGN
 
 from mcp_guardrail_server import authorize_url, sanitize_question, is_high_stakes, validate_answer, guardrail_summary
-from pathlib import Path
+
 BASE_URL = "https://catalog.msutexas.edu/content.php?catoid=28&navoid=1490"
+OUT_DIR = Path("outputs")
+DATA_DIR = Path("data")
+REPORT_DIR = OUT_DIR / "reports"
+CHART_DIR = OUT_DIR / "charts"
+INDEX_FILE = OUT_DIR / "catalog_chunks.csv"
+CRAWL_STATE_FILE = OUT_DIR / "crawl_state.json"
+CHAT_LOG_FILE = OUT_DIR / "agent_chat_log.json"
+EVAL_FILE = OUT_DIR / "rag_evaluation_results.csv"
+CITATION_FILE = OUT_DIR / "citation_verification_results.csv"
 
-
-BASE_DIR = Path(__file__).parent
-DATA_DIR = BASE_DIR / "data"
-OUTPUT_DIR = BASE_DIR / "outputs"
-REPORT_DIR = OUTPUT_DIR / "reports"
-CHART_DIR = OUTPUT_DIR / "charts"
-
-
-def safe_mkdir(path):
-    """
-    Create a directory safely.
-    If a file exists with the same name, remove it and create the directory.
-    This prevents Streamlit Cloud FileExistsError.
+def safe_mkdir(path: Path) -> None:
+    """Create a directory safely on Streamlit Cloud.
+    If a file with the same name exists, delete that file first.
     """
     if path.exists() and path.is_file():
         path.unlink()
     path.mkdir(parents=True, exist_ok=True)
 
 
-for d in [DATA_DIR, OUTPUT_DIR, REPORT_DIR, CHART_DIR]:
+for d in [OUT_DIR, DATA_DIR, REPORT_DIR, CHART_DIR]:
     safe_mkdir(d)
 
 USER_AGENT = "Mozilla/5.0 (compatible; MSU-Catalog-Agentic-RAG-Demo/2.0; +https://catalog.msutexas.edu/)"
