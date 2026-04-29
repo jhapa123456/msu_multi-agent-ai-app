@@ -43,8 +43,19 @@ CHAT_LOG_FILE = OUT_DIR / "agent_chat_log.json"
 EVAL_FILE = OUT_DIR / "rag_evaluation_results.csv"
 CITATION_FILE = OUT_DIR / "citation_verification_results.csv"
 
-for d in [OUT_DIR, DATA_DIR, REPORT_DIR, CHART_DIR]:
-    d.mkdir(parents=True, exist_ok=True)
+def safe_mkdir(path):
+    """
+    Create a directory safely.
+    If a file exists with the same name, remove it and create the directory.
+    This prevents Streamlit Cloud FileExistsError.
+    """
+    if path.exists() and path.is_file():
+        path.unlink()
+    path.mkdir(parents=True, exist_ok=True)
+
+
+for d in [DATA_DIR, OUTPUT_DIR, REPORT_DIR, CHART_DIR]:
+    safe_mkdir(d)
 
 USER_AGENT = "Mozilla/5.0 (compatible; MSU-Catalog-Agentic-RAG-Demo/2.0; +https://catalog.msutexas.edu/)"
 
